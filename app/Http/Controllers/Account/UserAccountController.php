@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserAccountController extends Controller
 {
@@ -17,9 +18,10 @@ class UserAccountController extends Controller
     public function login(Request $req){
         $validated = $req->validate([
             'email'=>'email|required|max:255',
-            'password'=>'string|required|max:255'
+            'password'=>'string|required|max:255',
+            
         ],[
-
+            
         ]);
 
         $user = User::where('email', $validated['email'])->first();
@@ -36,16 +38,31 @@ class UserAccountController extends Controller
         return view('accounts.users.signup');
     }
     public function register(Request $req){
+        // dd(1);
         $validated = $req->validate([
             'name'=>'string|required|max:255',
             'email'=>'email|required|max:255',
             'password'=>'string|required|max:255',
+            'gender' => 'integer|required',
+            'avatar'=>'image|mimes:jpg,jpeg,png,gif|max:10000'
         ]);
+        // dd(2);
         // ktr unique email
         if(User::where('email', $validated['email'])->first()){
             return redirect()->route('accounts.signup');
         }
+        // dd(3);
         $validated['password'] = Hash::make($validated['password']);
+        if ($req->hasFile('avatar')) {
+            $avatar = $req->file('avatar');
+            
+            // $path = $avatar->store('public/imgs/avatars');
+            $path = $avatar->store('public/imgs/avatars');
+            
+            // Lưu đường dẫn vào database hoặc thực hiện các thao tác khác tùy ý
+            // dd($path,Storage::url($path));
+            $validated['avatar'] = Storage::url($path);
+        }
         User::create($validated);
         return redirect()->route('accounts.signin');
     }

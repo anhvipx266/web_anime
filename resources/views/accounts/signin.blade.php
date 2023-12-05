@@ -9,12 +9,16 @@
                         <!-- authorization form -->
                         <form action="{{route('admin.accounts.login')}}" method="POST" class="sign__form">
                             @csrf
-                            <a href="/" class="sign__logo">
+                            <a href="{{route('admin.home')}}" class="sign__logo">
                                 <img src="img/logo.svg" alt="">
                             </a>
 
                             <div class="sign__group">
                                 <input type="text" class="sign__input" placeholder="Email" name="email">
+                                @error('email.required')
+                                    <label class="alert alert-danger">{{ $message }}</label>
+                                @enderror
+                                
                             </div>
 
                             <div class="sign__group">
@@ -29,7 +33,7 @@
 
                             <button class="sign__btn" type="submit"><span>Sign in</span></button>
 
-                            <span class="sign__text">Don't have an account? <a href="/signup">Sign up!</a></span>
+                            <span class="sign__text">Don't have an account? <a href="{{route('admin.accounts.signup')}}">Sign up!</a></span>
 
                             <span class="sign__text"><a href="/forgot">Forgot password?</a></span>
                         </form>

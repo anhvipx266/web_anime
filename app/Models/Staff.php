@@ -13,7 +13,10 @@ class Staff extends Authenticatable
         'name',
         'email',
         'password',
-        'phone'
+        'phone',
+        'gender',
+        'address',
+        'avatar'
     ];
     public function scopeGetDetails()
     {
