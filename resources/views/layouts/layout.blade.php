@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <base href="{{route('home')}}">
     <!-- CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/slimselect.css">
@@ -20,7 +20,7 @@
 
     @yield('css')
 
-    <title>@yield('tittle')</title>
+    <title>@yield('title')</title>
 
 </head>
 
@@ -29,9 +29,7 @@
     @yield('first-components')
 
     <!-- main content -->
-    <main class="main">
-        @yield('main')
-    </main>
+    @yield('main')
     <!-- end main content -->
 
     @yield('last-components')

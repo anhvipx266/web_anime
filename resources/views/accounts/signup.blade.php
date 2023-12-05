@@ -7,21 +7,31 @@
                 <div class="col-12">
                     <div class="sign__content">
                         <!-- registration form -->
-                        <form action="#" class="sign__form">
+                        <form action="{{route('accounts.register')}}" method="POST" class="sign__form">
+                            @csrf
+                            @method('post')
                             <a href="/" class="sign__logo">
                                 <img src="img/logo.svg" alt="">
                             </a>
 
                             <div class="sign__group">
-                                <input type="text" class="sign__input" placeholder="Name">
+                                <input type="text" class="sign__input" placeholder="Name" name="name">
                             </div>
 
                             <div class="sign__group">
-                                <input type="text" class="sign__input" placeholder="Email">
+                                <input type="email" class="sign__input" placeholder="Email" name="email">
                             </div>
 
                             <div class="sign__group">
-                                <input type="password" class="sign__input" placeholder="Password">
+                                <input type="text" class="sign__input" placeholder="SĐT" name="phone">
+                            </div>
+
+
+                            <div class="sign__group">
+                                <input type="password" class="sign__input" placeholder="Password" name="password">
+                            </div>
+                            <div class="sign__group">
+                                <input type="password" class="sign__input" placeholder="Confirm Password" name="confirm-password">
                             </div>
 
                             <div class="sign__group sign__group--checkbox">
@@ -29,9 +39,9 @@
                                 <label for="remember">I agree to the <a href="#">Privacy Policy</a></label>
                             </div>
 
-                            <button class="sign__btn" type="button"><span>Sign up</span></button>
+                            <button class="sign__btn" type="submit"><span>Sign up</span></button>
 
-                            <span class="sign__text">Already have an account? <a href="/signin">Sign in!</a></span>
+                            <span class="sign__text">Already have an account? <a href="{{route('accounts.signin')}}">Sign in!</a></span>
                         </form>
                         <!-- registration form -->
                     </div>

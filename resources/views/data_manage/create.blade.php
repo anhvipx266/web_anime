@@ -1,25 +1,29 @@
 @extends('layouts.layout')
-
+@section('title','Chi tiết Thể loại')
 @section('main')
     <div class="container-fluid">
         <div class="row">
             <!-- main title -->
             <div class="col-12">
                 <div class="main__title">
-                    <h2>Add new item</h2>
+                    <h2>Thêm Thể Loại</h2>
                 </div>
             </div>
             <!-- end main title -->
 
             <!-- form -->
             <div class="col-12">
-                <form action="#" class="sign__form sign__form--add">
+                <form action="{{empty($gen)?route('admin.genres.store'):route('admin.genres.update',$gen)}}" method="POST" class="sign__form sign__form--add">
+                    @csrf
+                    @if(!empty($gen))
+                        @method('patch')
+                    @endif
                     <div class="row">
                         <div class="col-12 col-xl-7">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="sign__group">
-                                        <input type="text" class="sign__input" placeholder="Title">
+                                        <input type="text" class="sign__input" placeholder="Tên" name="name" value="{{!empty($gen)?$gen->name:''}}">
                                     </div>
                                 </div>
 
@@ -373,17 +377,17 @@
 
                         <div class="col-12">
                             <div class="sign__group">
-                                <label class="sign__label">Item type:</label>
+                                <label class="sign__label">Trạng thái</label>
                                 <ul class="sign__radio">
                                     <li>
-                                        <input id="type1" type="radio" name="type" data-bs-toggle="collapse"
-                                            data-bs-target=".multi-collapse" checked="">
-                                        <label for="type1">Movie</label>
+                                        <input id="type1" type="radio" name="status" data-bs-toggle="collapse"
+                                            data-bs-target=".multi-collapse" {{!empty($gen) && $gen->status ? 'checked' :''}} value="1">
+                                        <label for="type1">Hiện</label>
                                     </li>
                                     <li>
-                                        <input id="type2" type="radio" name="type" data-bs-toggle="collapse"
+                                        <input id="type2" type="radio" name="status" {{!empty($gen) && $gen->status ? '' :'checked'}} value ="0" data-bs-toggle="collapse"
                                             data-bs-target=".multi-collapse">
-                                        <label for="type2">TV Series</label>
+                                        <label for="type2">Ẩn</label>
                                     </li>
                                 </ul>
                             </div>
@@ -520,7 +524,7 @@
                         <!-- end tv series -->
 
                         <div class="col-12">
-                            <button type="button" class="sign__btn sign__btn--small"><span>Publish</span></button>
+                            <button type="submit" class="sign__btn sign__btn--small"><span>Lưu</span></button>
                         </div>
                     </div>
                 </form>

@@ -41,4 +41,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function scopeGetDetails()
+    {
+        return $this->join('user_roles', 'users.user_role', '=', 'user_roles.id')
+                    ->select('users.*', 'user_roles.role as role');
+    }
 }
