@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Account;
 
-use App\Models\Staff;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-class AccountController extends Controller
+class UserAccountController extends Controller
 {
     //
     public function signin(){
-        return view('accounts.signin');
+        return view('accounts.users.signin');
     }
     public function login(Request $req){
         $validated = $req->validate([
@@ -22,36 +22,35 @@ class AccountController extends Controller
 
         ]);
 
-        $staff = Staff::where('email', $validated['email'])->first();
-        if(Hash::check($validated['password'], $staff->password)){
+        $user = User::where('email', $validated['email'])->first();
+        if(Hash::check($validated['password'], $user->password)){
             Auth::guard('staff')->attempt($validated);
             // auth()->attempt($validated);
             return redirect()->route('home');
         }
         else{
-            return redirect()->route('admin.accounts.signin');
+            return redirect()->route('accounts.signin');
         }
     }
     public function signup(Request $req){
-        return view('accounts.signup');
+        return view('accounts.users.signup');
     }
     public function register(Request $req){
         $validated = $req->validate([
             'name'=>'string|required|max:255',
             'email'=>'email|required|max:255',
             'password'=>'string|required|max:255',
-            'phone'=>'string|required|max:255'
         ]);
         // ktr unique email
-        if(Staff::where('email', $validated['email'])->first()){
+        if(User::where('email', $validated['email'])->first()){
             return redirect()->route('accounts.signup');
         }
         $validated['password'] = Hash::make($validated['password']);
-        Staff::create($validated);
+        User::create($validated);
         return redirect()->route('accounts.signin');
     }
     public function logout(Request $req){
         auth()->guard('staff')->logout();
-        return redirect()->route('admin.home');
+        return redirect()->route('home');
     }
 }

@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Staff extends Model
+class Staff extends Authenticatable
 {
     use HasFactory;
     protected $fillable = [
@@ -18,5 +19,8 @@ class Staff extends Model
     {
         return $this->join('staff_roles', 'staff.staff_roles', '=', 'staff_roles.id')
                     ->select('staff.*', 'staff_roles.role as role');
+    }
+    public function role(){
+        return $this->belongsTo(StaffRole::class,'staff_roles','id');
     }
 }

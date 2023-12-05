@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('staff_roles')->nullable();
+            $table->string('avatar')->nullable();
             $table->foreign('staff_roles')->references('id')->on('staff_roles')->onDelete('cascade');
             $table->string('email');
             $table->string('phone');

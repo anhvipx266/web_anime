@@ -28,6 +28,7 @@ class StaffController extends Controller
             'id' => ['int', 'ID'],
             'name' => ['string', 'Tên'],
             'role' => ['string', 'Vai trò'],
+            'avatar' => ['image', 'Avatar'],
             'email' => ['string', 'Email'],
             'phone' => ['string', 'SDT'],
             'gender' => ['boolean', 'Giới tính'],

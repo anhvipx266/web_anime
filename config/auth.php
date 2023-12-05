@@ -42,7 +42,7 @@ return [
         ],
         'staff' => [
             'driver' => 'session',
-            'provider' => 'staff', // Tên provider bạn đã đăng ký
+            'provider' => 'staffs', // Tên provider bạn đã đăng ký
         ],
     ],
 
@@ -68,7 +68,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
+        'staffs' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Staff::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

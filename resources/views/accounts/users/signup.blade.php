@@ -7,10 +7,10 @@
                 <div class="col-12">
                     <div class="sign__content">
                         <!-- registration form -->
-                        <form action="{{route('admin.accounts.register')}}" method="POST" class="sign__form">
+                        <form action="{{route('accounts.register')}}" method="POST" class="sign__form">
                             @csrf
                             @method('post')
-                            <a href="{{route('admin.home')}}" class="sign__logo">
+                            <a href="{{route('home')}}" class="sign__logo">
                                 <img src="img/logo.svg" alt="">
                             </a>
 
@@ -21,11 +21,6 @@
                             <div class="sign__group">
                                 <input type="email" class="sign__input" placeholder="Email" name="email">
                             </div>
-
-                            <div class="sign__group">
-                                <input type="text" class="sign__input" placeholder="SĐT" name="phone">
-                            </div>
-
 
                             <div class="sign__group">
                                 <input type="password" class="sign__input" placeholder="Password" name="password">

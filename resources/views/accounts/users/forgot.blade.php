@@ -7,31 +7,23 @@
                 <div class="col-12">
                     <div class="sign__content">
                         <!-- authorization form -->
-                        <form action="{{route('admin.accounts.login')}}" method="POST" class="sign__form">
-                            @csrf
+                        <form action="#" class="sign__form">
                             <a href="/" class="sign__logo">
                                 <img src="img/logo.svg" alt="">
                             </a>
 
                             <div class="sign__group">
-                                <input type="text" class="sign__input" placeholder="Email" name="email">
+                                <input type="text" class="sign__input" placeholder="Email">
                             </div>
-
-                            <div class="sign__group">
-                                <input type="password" class="sign__input" placeholder="Password" name="password">
-                            </div>
-                           
 
                             <div class="sign__group sign__group--checkbox">
                                 <input id="remember" name="remember" type="checkbox" checked="checked">
-                                <label for="remember">Remember Me</label>
+                                <label for="remember">I agree to the <a href="#">Privacy Policy</a></label>
                             </div>
 
-                            <button class="sign__btn" type="submit"><span>Sign in</span></button>
+                            <button class="sign__btn" type="button"><span>Recover</span></button>
 
-                            <span class="sign__text">Don't have an account? <a href="/signup">Sign up!</a></span>
-
-                            <span class="sign__text"><a href="/forgot">Forgot password?</a></span>
+                            <span class="sign__text">We will send a password to your Email</span>
                         </form>
                         <!-- end authorization form -->
                     </div>

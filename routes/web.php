@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\StaffRoleController;
 use App\Http\Controllers\Admin\UserRoleController;
 use App\Http\Controllers\Admin\VoteController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Account\UserAccountController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,9 +34,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('index');
 })->name('home');
-Route::get('/admin',function(){
-    return view('index');
-})->name('admin.home');
+
 // Route::get('/forgot', function () {
 //     return view('accounts.forgot');
 // });
@@ -51,13 +51,25 @@ Route::get('/admin',function(){
 //     return view('accounts.edit-user');
 // });
 Route::name('admin.')->prefix('admin')->group(function () {
-
     Route::get('/signin', [AccountController::class,'signin'])->name('accounts.signin');
     Route::post('/signin', [AccountController::class,'login'])->name('accounts.login');
     Route::get('/signup', [AccountController::class,'signup'])->name('accounts.signup');
     Route::post('/signup', [AccountController::class,'register'])->name('accounts.register');
+    Route::get('/logout', [AccountController::class,'logout'])->name('accounts.logout');
+});
 
+Route::get('/signin', [UserAccountController::class,'signin'])->name('accounts.signin');
+Route::post('/signin', [UserAccountController::class,'login'])->name('accounts.login');
+Route::get('/signup', [UserAccountController::class,'signup'])->name('accounts.signup');
+Route::post('/signup', [UserAccountController::class,'register'])->name('accounts.register');
+Route::get('/logout', [UserAccountController::class,'logout'])->name('accounts.logout');
 
+Route::name('admin.')->prefix('admin')->middleware(['staff'])->group(function () {
+
+    Route::get('/', function () {
+        return view('index');
+    })->name('home');
+    
     Route::resource('genres',GenreController::class);
     Route::resource('authors',AuthorController::class);
     Route::resource('advertisements',AdvertisementController::class);
@@ -73,12 +85,8 @@ Route::name('admin.')->prefix('admin')->group(function () {
     Route::resource('episodes',EpisodeController::class);
     Route::resource('movies',MovieController::class);
     Route::resource('users',UserController::class);
-})->middleware(['']);
+});
 
-Route::get('/signin', [AccountController::class,'signin'])->name('accounts.signin');
-Route::post('/signin', [AccountController::class,'login'])->name('accounts.login');
-Route::get('/signup', [AccountController::class,'signup'])->name('accounts.signup');
-Route::post('/signup', [AccountController::class,'register'])->name('accounts.register');
 
 Route::get('/404', function () {
     return view('404');

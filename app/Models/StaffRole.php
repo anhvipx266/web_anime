@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class StaffRole extends Model
 {
     use HasFactory;
+    public function staffs(){
+        return $this->hasMany(Staff::class,'staff_roles','id');
+    }
 }
