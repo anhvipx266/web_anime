@@ -23,9 +23,15 @@
                             </div>
 
                             <div class="sign__group">
-                                <input type="file" id="iavatar" class="sign__input" placeholder="Avatar" name="avatar" accept="image/*" onchange="previewImage()">
-                                <br>
-                                <img id="avatar-preview" src="#" alt="Preview" style="display: none; max-width: 300px;">
+                                <div class="sign__image sign__gallery col-6">
+                                    <label id="" for="sign__gallery-upload">Upload avatar</label>
+                                    <input data-name="" id="sign__gallery-upload" name="avatar"
+                                        class="sign__gallery-upload" type="file" accept=".png, .jpg, .jpeg"
+                                        >
+                                    </div>
+                                <div class="row">
+                                    <img id="avatar-preview" src="#" alt="Preview" style="display: none; max-width: 300px; height:160px;">
+                                </div>
                             </div>
 
                             <div class="sign__group">

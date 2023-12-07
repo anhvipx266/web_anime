@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Episode;
+use App\Models\Movie;
 use Illuminate\Http\Request;
+use Storage;
 
 class EpisodeController extends Controller
 {
@@ -53,7 +55,8 @@ class EpisodeController extends Controller
      */
     public function create()
     {
-        //
+        $movies = Movie::all();
+        return view('admin.create.episode',compact('movies'));
     }
 
     /**
@@ -62,9 +65,28 @@ class EpisodeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        // dd($req->all());
+        $validated = $req->validate([
+            'title'=>'string|required|max:255',
+            'movie_id' => 'integer|required',
+            'thumbnail'=>'string',
+            'thumbnail_file'=>'file|mimes:jpg,jpeg,png,gif|max:10000'
+        ],[
+            
+        ]);
+        // tải file thế link
+        if ($req->hasFile('thumbnail_file')) {
+            $avatar = $req->file('thumbnail_file');
+            
+            $path = $avatar->store('public/imgs/images');
+            
+            // Lưu đường dẫn vào database hoặc thực hiện các thao tác khác tùy ý
+            $validated['thumbnail'] = Storage::url($path);
+        }
+        Episode::create($validated);
+        return redirect()->route('admin.episodes.index');
     }
 
     /**
@@ -86,7 +108,9 @@ class EpisodeController extends Controller
      */
     public function edit(Episode $episode)
     {
-        //
+        $movies = Movie::all();
+        $v = $episode;
+        return view('admin.create.episode',compact('movies','v'));
     }
 
     /**
@@ -96,9 +120,28 @@ class EpisodeController extends Controller
      * @param  \App\Models\Episode  $episode
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Episode $episode)
+    public function update(Request $req, Episode $episode)
     {
-        //
+         // dd($req->all());
+         $validated = $req->validate([
+            'title'=>'string|required|max:255',
+            'movie_id' => 'integer|required',
+            'thumbnail'=>'string',
+            'thumbnail_file'=>'file|mimes:jpg,jpeg,png,gif|max:10000'
+        ],[
+            
+        ]);
+        // tải file thế link
+        if ($req->hasFile('thumbnail_file')) {
+            $avatar = $req->file('thumbnail_file');
+            
+            $path = $avatar->store('public/imgs/images');
+            
+            // Lưu đường dẫn vào database hoặc thực hiện các thao tác khác tùy ý
+            $validated['thumbnail'] = Storage::url($path);
+        }
+        $episode->update($validated);
+        return redirect()->route('admin.episodes.index');
     }
 
     /**
@@ -109,6 +152,6 @@ class EpisodeController extends Controller
      */
     public function destroy(Episode $episode)
     {
-        //
+        $episode->delete();
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Vote;
+use App\Models\User;
+use App\Models\Movie;
 use Illuminate\Http\Request;
 
 class VoteController extends Controller
@@ -50,7 +52,11 @@ class VoteController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        $movies = Movie::all();
+        return view('admin.create.vote',compact(
+            'users','movies'
+        ));
     }
 
     /**
@@ -59,9 +65,18 @@ class VoteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        // dd($req->all());
+        $validated = $req->validate([
+            'user_id'=>'integer|required',
+            'movie_id' => 'integer|required',
+        ],[
+            
+        ]);
+        
+        Vote::create($validated);
+        return redirect()->route('admin.votes.index');
     }
 
     /**
@@ -83,7 +98,12 @@ class VoteController extends Controller
      */
     public function edit(Vote $vote)
     {
-        //
+        $users = User::all();
+        $movies = Movie::all();
+        $v = $vote;
+        return view('admin.create.vote',compact(
+            'users','movies','v'
+        ));
     }
 
     /**
@@ -93,9 +113,18 @@ class VoteController extends Controller
      * @param  \App\Models\Vote  $vote
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Vote $vote)
+    public function update(Request $req, Vote $vote)
     {
-        //
+         // dd($req->all());
+         $validated = $req->validate([
+            'user_id'=>'integer|required',
+            'movie_id' => 'integer|required',
+        ],[
+            
+        ]);
+        
+       $vote->update($validated);
+        return redirect()->route('admin.votes.index');
     }
 
     /**
@@ -106,6 +135,6 @@ class VoteController extends Controller
      */
     public function destroy(Vote $vote)
     {
-        //
+        $vote->delete();
     }
 }

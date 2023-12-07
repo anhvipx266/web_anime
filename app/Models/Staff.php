@@ -16,7 +16,8 @@ class Staff extends Authenticatable
         'phone',
         'gender',
         'address',
-        'avatar'
+        'avatar',
+        'staff_roles'
     ];
     public function scopeGetDetails()
     {

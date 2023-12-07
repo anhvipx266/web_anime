@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Vote extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'user_id','movie_id'
+    ];
     public function scopeGetDetails()
     {
         return $this->join('users', 'votes.user_id', '=', 'users.id')

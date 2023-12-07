@@ -48,7 +48,7 @@ class CountryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.create.country');
     }
 
     /**
@@ -57,9 +57,19 @@ class CountryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        $validated = $req->validate([
+            'name'=>'string|required|max:255',
+        ],[
+            'title.required'=> 'Vui lòng nhập tên',
+            'email.required'=> 'Vui lòng Email',
+            'password.required'=> 'Vui lòng mật khẩu',
+            'password.min'=> 'Mật khẩu tối thiểu 8 kí tự',
+        ]);
+       
+        Country::create($validated);
+        return redirect()->route('admin.countries.index');
     }
 
     /**
@@ -70,7 +80,7 @@ class CountryController extends Controller
      */
     public function show(Country $country)
     {
-        //
+        
     }
 
     /**
@@ -81,7 +91,9 @@ class CountryController extends Controller
      */
     public function edit(Country $country)
     {
-        //
+        return view('admin.create.country',[
+            'v'=>$country
+        ]);
     }
 
     /**
@@ -91,9 +103,19 @@ class CountryController extends Controller
      * @param  \App\Models\Country  $country
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Country $country)
+    public function update(Request $req, Country $country)
     {
-        //
+        $validated = $req->validate([
+            'name'=>'string|required|max:255',
+        ],[
+            'title.required'=> 'Vui lòng nhập tên',
+            'email.required'=> 'Vui lòng Email',
+            'password.required'=> 'Vui lòng mật khẩu',
+            'password.min'=> 'Mật khẩu tối thiểu 8 kí tự',
+        ]);
+       
+        $country->update($validated);
+        return redirect()->route('admin.countries.index');
     }
 
     /**
@@ -104,6 +126,6 @@ class CountryController extends Controller
      */
     public function destroy(Country $country)
     {
-        //
+        $country->delete();
     }
 }

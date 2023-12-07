@@ -133,6 +133,31 @@
 		});
 	}
 
+	if (document.querySelector('#sign__movie')) {
+		new SlimSelect({
+			select: '#sign__movie',
+			settings: {
+				placeholderText: 'Chọn phim',
+			}
+		});
+	}
+	if (document.querySelector('#sign__user')) {
+		new SlimSelect({
+			select: '#sign__user',
+			settings: {
+				placeholderText: 'Chọn người dùng',
+			}
+		});
+	}
+	if (document.querySelector('#sign__series')) {
+		new SlimSelect({
+			select: '#sign__series',
+			settings: {
+				placeholderText: 'Chọn Ser',
+			}
+		});
+	}
+
 	/*==============================
 	Upload
 	==============================*/

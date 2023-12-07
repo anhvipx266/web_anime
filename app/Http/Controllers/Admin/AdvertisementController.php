@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Advertisement;
 use Illuminate\Http\Request;
+use Storage;
 
 class AdvertisementController extends Controller
 {
@@ -51,8 +52,8 @@ class AdvertisementController extends Controller
      */
     public function create()
     {
-        //
-    }
+        return view('admin.create.advertisement');
+    }   
 
     /**
      * Store a newly created resource in storage.
@@ -60,9 +61,35 @@ class AdvertisementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        // dd(1);
+        // dd($req->hasFile('image_file'));
+        $validated = $req->validate([
+            'title'=>'string|required|max:255',
+            // 'description'=>'string',
+            // 'image_url'=>'string',
+            'target_url'=>'url|required',
+            'image_file'=>'image|mimes:jpg,jpeg,png,gif|max:10000'
+        ],[
+            'title.required'=> 'Vui lòng nhập tên',
+            'email.required'=> 'Vui lòng Email',
+            'password.required'=> 'Vui lòng mật khẩu',
+            'password.min'=> 'Mật khẩu tối thiểu 8 kí tự',
+        ]);
+        // dd(1);
+        // tải file thế link
+        if ($req->hasFile('image_file')) {
+            $avatar = $req->file('image_file');
+            // dd('ok');
+            // $path = $avatar->store('public/imgs/avatars');
+            $path = $avatar->store('public/imgs/images');
+            
+            // Lưu đường dẫn vào database hoặc thực hiện các thao tác khác tùy ý
+            $validated['image_url'] = Storage::url($path);
+        }
+        Advertisement::create($validated);
+        return redirect()->route('admin.advertisements.index');
     }
 
     /**
@@ -84,7 +111,10 @@ class AdvertisementController extends Controller
      */
     public function edit(Advertisement $advertisement)
     {
-        //
+        $v = $advertisement;
+        return view('admin.create.advertisement',compact(
+            'v'
+        ));
     }
 
     /**
@@ -94,9 +124,37 @@ class AdvertisementController extends Controller
      * @param  \App\Models\Advertisement  $advertisement
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Advertisement $advertisement)
+    public function update(Request $req, Advertisement $advertisement)
     {
-        //
+        // dd($req->all());
+        $validated = $req->validate([
+            'title'=>'string|required|max:255',
+            'description'=>'string',
+            'image_url'=>'string',
+            'target_url'=>'url|required',
+            'image_file'=>'image|mimes:jpg,jpeg,png,gif|max:10000'
+        ],[
+            'title.required'=> 'Vui lòng nhập tên',
+            'email.required'=> 'Vui lòng Email',
+            'password.required'=> 'Vui lòng mật khẩu',
+            'password.min'=> 'Mật khẩu tối thiểu 8 kí tự',
+        ]);
+        // dd(1);
+        
+        // tải file thế link
+        if ($req->hasFile('image_file')) {
+            $avatar = $req->file('image_file');
+            // dd('ok');
+            // $path = $avatar->store('public/imgs/avatars');
+            $path = $avatar->store('public/imgs/images');
+            
+            // Lưu đường dẫn vào database hoặc thực hiện các thao tác khác tùy ý
+            
+            $validated['image_url'] = Storage::url($path);
+        }
+        // dd($validated);
+        $advertisement->update($validated);
+        return redirect()->route('admin.advertisements.index');
     }
 
     /**
@@ -107,6 +165,6 @@ class AdvertisementController extends Controller
      */
     public function destroy(Advertisement $advertisement)
     {
-        //
+        $advertisement->delete();
     }
 }

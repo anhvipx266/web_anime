@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Staff;
+use App\Models\StaffRole;
 use Illuminate\Http\Request;
+use Storage;
+use Hash;
 
 class StaffController extends Controller
 {
@@ -55,7 +58,11 @@ class StaffController extends Controller
      */
     public function create()
     {
-        //
+        $staff_roles = StaffRole::all();
+        // dd($staff_roles);
+        return view('admin.create.staff',compact(
+            'staff_roles'
+        ));
     }
 
     /**
@@ -64,9 +71,39 @@ class StaffController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        // dd($req->all());
+        $validated = $req->validate([
+            'name'=>'string|required|max:255',
+            'staff_roles' => 'integer|required',
+            'email' => 'string|required|max:255',
+            'password'=>'string|required|max:255',
+            'phone' => 'string|required|max:255',
+            'gender' => 'integer|required',
+            'status'=>'integer|required',
+            'avatar_file'=>'image|mimes:jpg,jpeg,png,gif|max:10000',
+            
+            // 'release_date'=>'date'
+            // 'thumbnail'=>'url|required',
+            // 'thumbnail_file'=>'file|mimes:jpg,jpeg,png,gif|max:10000'
+        ],[
+            
+        ]);
+        // dd(1);
+        $validated['password'] = Hash::make($validated['password']);
+        // tải file thế link
+        if ($req->hasFile('avatar_file')) {
+            $avatar = $req->file('avatar_file');
+            
+            $path = $avatar->store('public/imgs/avatars');
+            
+            // Lưu đường dẫn vào database hoặc thực hiện các thao tác khác tùy ý
+            $validated['avatar'] = Storage::url($path);
+        }
+        Staff::create($validated);
+        return redirect()->route('admin.staffs.index');
+    
     }
 
     /**
@@ -88,7 +125,12 @@ class StaffController extends Controller
      */
     public function edit(Staff $staff)
     {
-        //
+        $staff_roles = StaffRole::all();
+        $v = $staff;
+        // dd($staff_roles);
+        return view('admin.create.staff',compact(
+            'staff_roles','v'
+        ));
     }
 
     /**
@@ -98,9 +140,38 @@ class StaffController extends Controller
      * @param  \App\Models\Staff  $staff
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Staff $staff)
+    public function update(Request $req, Staff $staff)
     {
-        //
+         // dd($req->all());
+         $validated = $req->validate([
+            'name'=>'string|required|max:255',
+            'staff_roles' => 'integer|required',
+            'email' => 'string|required|max:255',
+            'password'=>'string|required|max:255',
+            'phone' => 'string|required|max:255',
+            'gender' => 'integer|required',
+            'status'=>'integer|required',
+            'avatar_file'=>'image|mimes:jpg,jpeg,png,gif|max:10000',
+            
+            // 'release_date'=>'date'
+            // 'thumbnail'=>'url|required',
+            // 'thumbnail_file'=>'file|mimes:jpg,jpeg,png,gif|max:10000'
+        ],[
+            
+        ]);
+        // dd(1);
+        $validated['password'] = Hash::make($validated['password']);
+        // tải file thế link
+        if ($req->hasFile('avatar_file')) {
+            $avatar = $req->file('avatar_file');
+            
+            $path = $avatar->store('public/imgs/avatars');
+            
+            // Lưu đường dẫn vào database hoặc thực hiện các thao tác khác tùy ý
+            $validated['avatar'] = Storage::url($path);
+        }
+        $staff->update($validated);
+        return redirect()->route('admin.staffs.index');
     }
 
     /**
@@ -111,6 +182,6 @@ class StaffController extends Controller
      */
     public function destroy(Staff $staff)
     {
-        //
+        $staff->delete();
     }
 }

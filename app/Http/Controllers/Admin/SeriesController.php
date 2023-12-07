@@ -49,7 +49,7 @@ class SeriesController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.create.series');
     }
 
     /**
@@ -58,9 +58,18 @@ class SeriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        $validated = $req->validate([
+            'title'=>'string|required|max:255',
+            'description'=>'string'
+            // 'movie_id' => 'integer|required',
+        ],[
+            
+        ]);
+        
+        Series::create($validated);
+        return redirect()->route('admin.series.index');
     }
 
     /**
@@ -82,7 +91,9 @@ class SeriesController extends Controller
      */
     public function edit(Series $series)
     {
-        //
+        return view('admin.create.series',[
+            'v' => $series
+        ]);
     }
 
     /**
@@ -92,9 +103,18 @@ class SeriesController extends Controller
      * @param  \App\Models\Series  $series
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Series $series)
+    public function update(Request $req, Series $series)
     {
-        //
+        $validated = $req->validate([
+            'title'=>'string|required|max:255',
+            'description'=>'string'
+            // 'movie_id' => 'integer|required',
+        ],[
+            
+        ]);
+        
+        $series->update($validated);
+        return redirect()->route('admin.series.index');
     }
 
     /**
@@ -105,6 +125,6 @@ class SeriesController extends Controller
      */
     public function destroy(Series $series)
     {
-        //
+        $series->delete();
     }
 }

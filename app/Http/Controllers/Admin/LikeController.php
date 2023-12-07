@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Like;
+use App\Models\Movie;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LikeController extends Controller
@@ -51,7 +53,11 @@ class LikeController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        $movies = Movie::all();
+        return view('admin.create.like',compact(
+            'users','movies'
+        ));
     }
 
     /**
@@ -60,9 +66,20 @@ class LikeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        // dd($req->all());
+        $validated = $req->validate([
+            'user_id'=>'integer|required',
+            'movie_id' => 'integer|required',
+            'is_like'=>'integer|required',
+            'thumbnail_file'=>'file|mimes:jpg,jpeg,png,gif|max:10000'
+        ],[
+            
+        ]);
+        
+        Like::create($validated);
+        return redirect()->route('admin.episodes.index');
     }
 
     /**
@@ -84,7 +101,12 @@ class LikeController extends Controller
      */
     public function edit(Like $like)
     {
-        //
+        $users = User::all();
+        $movies = Movie::all();
+        $v = $like;
+        return view('admin.create.like',compact(
+            'users','movies'
+        ));
     }
 
     /**
@@ -94,9 +116,20 @@ class LikeController extends Controller
      * @param  \App\Models\Like  $like
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Like $like)
+    public function update(Request $req, Like $like)
     {
-        //
+        // dd($req->all());
+        $validated = $req->validate([
+            'user_id'=>'integer|required',
+            'movie_id' => 'integer|required',
+            'is_like'=>'integer|required',
+            'thumbnail_file'=>'file|mimes:jpg,jpeg,png,gif|max:10000'
+        ],[
+            
+        ]);
+        
+       $like->update($validated);
+        return redirect()->route('admin.episodes.index');
     }
 
     /**
@@ -107,6 +140,6 @@ class LikeController extends Controller
      */
     public function destroy(Like $like)
     {
-        //
+        $like->delete();
     }
 }

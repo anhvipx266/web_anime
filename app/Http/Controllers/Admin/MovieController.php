@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Author;
+use App\Models\Country;
+use App\Models\Genre;
 use App\Models\Movie;
+use App\Models\Series;
 use Illuminate\Http\Request;
+use Storage;
 
 class MovieController extends Controller
 {
@@ -45,7 +50,13 @@ class MovieController extends Controller
      */
     public function create()
     {
-        return view("genres.create");
+        $series = Series::all();
+        $authors = Author::all();
+        $countries = Country::all();
+        $genres = Genre::all();
+        return view("admin.create.movie",compact(
+            'series','authors','countries','genres'
+        ));
     }
 
     /**
@@ -56,12 +67,29 @@ class MovieController extends Controller
      */
     public function store(Request $req)
     {
+        // dd($req->all());
         $validated = $req->validate([
-            "name" =>"required|string|max:255",
-            "status"=>"required"
+            'title'=>'string|required|max:255',
+            'author_id' => 'integer|required',
+            'country_id' => 'integer|required',
+            // 'release_date'=>'date'
+            'thumbnail'=>'string',
+            'thumbnail_file'=>'file|mimes:jpg,jpeg,png,gif|max:10000'
+        ],[
+            
         ]);
-        Genre::create($validated);
-        return redirect()->route("admin.genres.index");
+        // dd(1);
+        // tải file thế link
+        if ($req->hasFile('thumbnail_file')) {
+            $avatar = $req->file('thumbnail_file');
+            
+            $path = $avatar->store('public/imgs/images');
+            
+            // Lưu đường dẫn vào database hoặc thực hiện các thao tác khác tùy ý
+            $validated['thumbnail'] = Storage::url($path);
+        }
+        Movie::create($validated);
+        return redirect()->route('admin.movies.index');
     }
 
     /**
@@ -81,10 +109,12 @@ class MovieController extends Controller
      * @param  \App\Models\Movie  $movie
      * @return \Illuminate\Http\Response
      */
-    public function edit(Movie $movie,$id)
+    public function edit(Movie $movie)
     {
-        $gen = Genre::findOrFail($id);
-        return view("genres.create",compact('gen'));
+       
+        return view("genres.create",[
+            'v'=>$movie
+        ]);
     }
 
     /**
@@ -94,16 +124,31 @@ class MovieController extends Controller
      * @param  \App\Models\Movie  $movie
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $req, Movie $movie,$id)
+    public function update(Request $req, Movie $movie)
     {
-        $validated = $req->validate([
-            "name" =>"required|string|max:255",
-            "status"=>"integer|required"
-        ]);
-        $gen = Genre::findOrFail($id);
-
-        $gen->update($validated);
-        return redirect()->route("admin.genres.index");
+       // dd($req->all());
+       $validated = $req->validate([
+        'title'=>'string|required|max:255',
+        'author_id' => 'integer|required',
+        'country_id' => 'integer|required',
+        // 'release_date'=>'date'
+        'thumbnail'=>'string',
+        'thumbnail_file'=>'file|mimes:jpg,jpeg,png,gif|max:10000'
+    ],[
+        
+    ]);
+    // dd(1);
+    // tải file thế link
+    if ($req->hasFile('thumbnail_file')) {
+        $avatar = $req->file('thumbnail_file');
+        
+        $path = $avatar->store('public/imgs/images');
+        
+        // Lưu đường dẫn vào database hoặc thực hiện các thao tác khác tùy ý
+        $validated['thumbnail'] = Storage::url($path);
+    }
+    $movie->update($validated);
+    return redirect()->route('admin.movies.index');
     }
 
     /**
@@ -112,10 +157,9 @@ class MovieController extends Controller
      * @param  \App\Models\Movie  $movie
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Movie $movie,$id)
+    public function destroy(Movie $movie)
     {
-        $gen = Genre::find($id);
-        $gen->delete();
-        return redirect()->route('admin.genres.index');
+        $movie->delete();
+        return redirect()->route('admin.movies.index');
     }
 }

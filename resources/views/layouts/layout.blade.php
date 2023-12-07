@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/slimselect.css">
     <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/app.css">
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32">
@@ -35,10 +36,12 @@
     @yield('last-components')
 
     <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/smooth-scrollbar.js"></script>
     <script src="js/slimselect.min.js"></script>
     <script src="js/admin.js"></script>
+    <script src="js/app.js"></script>
 
     @yield('js')
 </body>

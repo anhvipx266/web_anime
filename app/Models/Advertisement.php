@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Advertisement extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'title','description','image_url','target_url'
+    ];
 }

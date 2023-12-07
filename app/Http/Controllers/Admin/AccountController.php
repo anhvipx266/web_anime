@@ -31,7 +31,7 @@ class AccountController extends Controller
         if(Hash::check($validated['password'], $staff->password)){
             Auth::guard('staff')->attempt($validated);
             // auth()->attempt($validated);
-            return redirect()->route('home.admin');
+            return redirect()->route('admin.home');
         }
         else{
             return redirect()->route('admin.accounts.signin');

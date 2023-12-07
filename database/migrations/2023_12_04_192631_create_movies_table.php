@@ -27,6 +27,7 @@ return new class extends Migration
             $table->date('release_date')->nullable();
             $table->integer('vote_count')->nullable();
             $table->integer('like_count')->nullable();
+            $table->unsignedInteger('view_count')->default(0);
             $table->timestamps();
         });
     }

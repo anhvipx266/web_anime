@@ -33,7 +33,8 @@ class GenreController extends Controller
         //          show text
         $types = [
             'id' => ['int', 'ID'],
-            'name' => ['string', 'Thể loại']
+            'name' => ['string', 'Thể loại'],
+            'status' => ['boolean','Trạng thái']
         ];
         $values = $genres;
         $title = 'Tác giả';
@@ -56,7 +57,7 @@ class GenreController extends Controller
      */
     public function create()
     {
-        return view("genres.create");
+        return view("admin.create.genre");
     }
 
     /**
@@ -92,12 +93,11 @@ class GenreController extends Controller
      * @param  \App\Models\Genre  $genre
      * @return \Illuminate\Http\Response
      */
-    public function edit(Genre $gen,$id)
+    public function edit(Genre $genre,$id)
     {
-        // dd($id);
-        // dd(Genre::find($id)->name);
-        $gen = Genre::findOrFail($id);
-        return view("genres.create",compact('gen'));
+        return view("admin.create.genre",[
+            'v'=>$genre
+        ]);
     }
 
     /**
@@ -107,15 +107,13 @@ class GenreController extends Controller
      * @param  \App\Models\Genre  $genre
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $req, Genre $gen,$id)
+    public function update(Request $req, Genre $genre,$id)
     {
         $validated = $req->validate([
             "name" =>"required|string|max:255",
-            "status"=>"integer|required"
+            "status"=>"required"
         ]);
-        $gen = Genre::findOrFail($id);
-
-        $gen->update($validated);
+        $genre->update($validated);
         return redirect()->route("admin.genres.index");
     }
 
@@ -125,10 +123,9 @@ class GenreController extends Controller
      * @param  \App\Models\Genre  $genre
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Genre $gen,$id)
+    public function destroy(Genre $genre,$id)
     {
-        $gen = Genre::find($id);
-        $gen->delete();
+        $genre->delete();
         return redirect()->route('admin.genres.index');
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
+use App\Models\Movie;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -52,7 +54,11 @@ class CommentController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        $movies = Movie::all();
+        return view('admin.create.comment',compact(
+            'users','movies'
+        ));
     }
 
     /**
@@ -61,9 +67,19 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+         // dd($req->all());
+         $validated = $req->validate([
+            'user_id'=>'integer|required',
+            'movie_id' => 'integer|required',
+            'content'=>'string|required|max:255'
+        ],[
+            
+        ]);
+      
+        Comment::create($validated);
+        return redirect()->route('admin.comments.index');
     }
 
     /**
@@ -85,7 +101,12 @@ class CommentController extends Controller
      */
     public function edit(Comment $comment)
     {
-        //
+        $users = User::all();
+        $movies = Movie::all();
+        $v = $comment;
+        return view('admin.create.comment',compact(
+            'users','movies','v'
+        ));
     }
 
     /**
@@ -95,9 +116,19 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $req, Comment $comment)
     {
-        //
+         // dd($req->all());
+         $validated = $req->validate([
+            'user_id'=>'integer|required',
+            'movie_id' => 'integer|required',
+            'content'=>'string|required|max:255'
+        ],[
+            
+        ]);
+      
+        $comment->update($validated);
+        return redirect()->route('admin.comments.index');
     }
 
     /**
@@ -108,6 +139,6 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $comment->delete();
     }
 }

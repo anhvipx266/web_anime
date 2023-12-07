@@ -48,7 +48,7 @@ class AuthorController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.create.author');
     }
 
     /**
@@ -57,9 +57,19 @@ class AuthorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        $validated = $req->validate([
+            'name'=>'string|required|max:255',
+        ],[
+            'title.required'=> 'Vui lòng nhập tên',
+            'email.required'=> 'Vui lòng Email',
+            'password.required'=> 'Vui lòng mật khẩu',
+            'password.min'=> 'Mật khẩu tối thiểu 8 kí tự',
+        ]);
+       
+        Author::create($validated);
+        return redirect()->route('admin.authors.index');
     }
 
     /**
@@ -81,7 +91,9 @@ class AuthorController extends Controller
      */
     public function edit(Author $author)
     {
-        //
+        return view('admin.create.author',[
+            'v'=>$author
+        ]);
     }
 
     /**
@@ -91,9 +103,19 @@ class AuthorController extends Controller
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Author $author)
+    public function update(Request $req, Author $author)
     {
-        //
+        $validated = $req->validate([
+            'name'=>'string|required|max:255',
+        ],[
+            'title.required'=> 'Vui lòng nhập tên',
+            'email.required'=> 'Vui lòng Email',
+            'password.required'=> 'Vui lòng mật khẩu',
+            'password.min'=> 'Mật khẩu tối thiểu 8 kí tự',
+        ]);
+       
+        $author->update($validated);
+        return redirect()->route('admin.authors.index');
     }
 
     /**
