@@ -38,9 +38,8 @@
                     </div>
                 </div>
                 <div>
-                    <a href="{{ route('admin.'.$for.'.create') }}">
+                    <a class="text-white btn btn-white" href="{{ route('admin.'.$for.'.create') }}" >
                         Thêm mới
-
                     </a>
                 </div>
             </div>
@@ -67,8 +66,10 @@
                                 @foreach ($types as $key => $dtype)
                                     {{$type = $dtype[0]}}
                                     <td>
-                                        @if ($type == 'int' || $type == 'string' || $type =='date')
+                                        @if ($type == 'string' || $type =='date')
                                             <div class="catalog__text">{{$v->$key}}</div>
+                                        @elseif ($type == 'int' || $type =='float')
+                                            <div class="catalog__text">{{number_format($v->$key)}}</div>
                                         @elseif($type == 'text')
                                             <div class="catalog__text">{{$v->$key}}</div>
                                         @elseif($type == 'image')
