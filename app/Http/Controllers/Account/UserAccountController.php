@@ -26,8 +26,7 @@ class UserAccountController extends Controller
 
         $user = User::where('email', $validated['email'])->first();
         if(Hash::check($validated['password'], $user->password)){
-            Auth::guard('staff')->attempt($validated);
-            // auth()->attempt($validated);
+            auth()->attempt($validated);
             return redirect()->route('home');
         }
         else{
@@ -67,7 +66,7 @@ class UserAccountController extends Controller
         return redirect()->route('accounts.signin');
     }
     public function logout(Request $req){
-        auth()->guard('staff')->logout();
+        auth()->logout();
         return redirect()->route('home');
     }
 }
