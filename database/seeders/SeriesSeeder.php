@@ -1,0 +1,24 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Series;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class SeriesSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        // Series::truncate();
+        Series::create([
+            'title' => 'Marvel Series',
+            'description' => 'Loạt phim bởi Marvel Studio'
+        ]);
+    }
+}
