@@ -23,7 +23,8 @@ class MovieController extends Controller
         $limit = 10; //tùy chọn, số dòng/ trang
         $page = $req->page > 0 ? $req->page : 1; // trang hiện tại đang truy cập
         //values:id, tit, desc, thum, release_date, vote, like
-        $movies = Movie::paginate($limit,['*'],'page',$page);
+        
+        $movies = Movie::search($req)->paginate($limit,['*'],'page',$page);
         $count = $movies->count();
         // key => 
         //          form type
@@ -40,7 +41,10 @@ class MovieController extends Controller
         $values = $movies;
         $title = 'Phim';
         $for = 'movies';
-        return view("data_manage.index",compact("movies","page",'types','values','title','count','for'));
+        $searchBy = 'Tìm theo tiêu đề...';
+        return view("data_manage.index",compact("movies","page",'types','values','title','count','for',
+            'searchBy','req'
+        ));
     }
 
     /**

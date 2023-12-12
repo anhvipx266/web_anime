@@ -20,7 +20,8 @@ class EpisodeController extends Controller
         $limit = 10; //tùy chọn, số dòng/ trang
         $page = $req->page > 0 ? $req->page : 1; // trang hiện tại đang truy cập
         //values:id, tit, desc, thum, release_date, vote, like
-        $episodes = Episode::getDetails()
+       
+        $episodes = Episode::search($req)
             ->paginate($limit, ['*'], 'page', $page);
         $count = $episodes->count();
         // key => 
@@ -37,13 +38,15 @@ class EpisodeController extends Controller
         $values = $episodes;
         $title = 'Tập phim';
         $for = 'episodes';
+        $searchBy = 'Tìm theo tiêu đề';
         return view("data_manage.index", compact(
             "page",
             'types',
             'values',
             'title',
             'count',
-            'for'
+            'for',
+            'searchBy','req'
         )
         );
     }

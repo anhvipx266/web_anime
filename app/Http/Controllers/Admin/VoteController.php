@@ -20,7 +20,8 @@ class VoteController extends Controller
         $limit = 10; //tùy chọn, số dòng/ trang
         $page = $req->page > 0 ? $req->page : 1; // trang hiện tại đang truy cập
         //values:id, tit, desc, thum, release_date, vote, like
-        $votes = Vote::getDetails()
+        
+        $votes = Vote::search($req)
             ->paginate($limit, ['*'], 'page', $page);
         $count = $votes->count();
         // key => 
@@ -34,13 +35,15 @@ class VoteController extends Controller
         $values = $votes;
         $title = 'Bình chọn';
         $for = 'votes';
+        $searchBy = 'Tìm theo người dùng';
         return view("data_manage.index", compact(
             "page",
             'types',
             'values',
             'title',
             'count',
-            'for'
+            'for',
+            'searchBy','req'
         )
         );
     }

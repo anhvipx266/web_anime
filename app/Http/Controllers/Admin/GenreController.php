@@ -26,7 +26,10 @@ class GenreController extends Controller
         $limit = 5; //tùy chọn, số dòng/ trang
         $page = $req->page > 0 ? $req->page : 1; // trang hiện tại đang truy cập
         //values:id, tit, desc, thum, release_date, vote, like
-        $genres = Genre::paginate($limit, ['*'], 'page', $page);
+        
+        // dd($query->toSql());
+        
+        $genres = Genre::search($req)->paginate($limit, ['*'], 'page', $page);
         $count = $genres->count();
         // key => 
         //          form type
@@ -37,15 +40,17 @@ class GenreController extends Controller
             'status' => ['boolean','Trạng thái']
         ];
         $values = $genres;
-        $title = 'Tác giả';
-        $for = 'authors';
+        $title = 'Thể loại';
+        $for = 'genres';
+        $searchBy = 'Tìm theo tên';
         return view("data_manage.index", compact(
             "page",
             'types',
             'values',
             'title',
             'count',
-            'for'
+            'for',
+            'searchBy','req'
         )
         );
     }

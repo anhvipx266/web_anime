@@ -18,7 +18,8 @@ class StaffRoleController extends Controller
         $limit = 10; //tùy chọn, số dòng/ trang
         $page = $req->page > 0 ? $req->page : 1; // trang hiện tại đang truy cập
         //values:id, tit, desc, thum, release_date, vote, like
-        $staff_roles = StaffRole::paginate($limit, ['*'], 'page', $page);
+        
+        $staff_roles = StaffRole::search($req)->paginate($limit, ['*'], 'page', $page);
         $count = $staff_roles->count();
         // key => 
         //          form type
@@ -30,13 +31,15 @@ class StaffRoleController extends Controller
         $values = $staff_roles;
         $title = 'Vai trò nhân viên';
         $for = 'staff_roles';
+        $searchBy = 'Tìm theo vai trò';
         return view("data_manage.index", compact(
             "page",
             'types',
             'values',
             'title',
             'count',
-            'for'
+            'for',
+            'searchBy','req'
         )
         );
     }

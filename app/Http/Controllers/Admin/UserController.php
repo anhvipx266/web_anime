@@ -21,7 +21,8 @@ class UserController extends Controller
         $limit = 10; //tùy chọn, số dòng/ trang
         $page = $req->page > 0 ? $req->page : 1; // trang hiện tại đang truy cập
         //values:id, tit, desc, thum, release_date, vote, like
-        $users = User::getDetails()
+        
+        $users = User::search($req)
             ->paginate($limit, ['*'], 'page', $page);
         $count = $users->count();
         // key => 
@@ -39,13 +40,14 @@ class UserController extends Controller
         $values = $users;
         $title = 'Người dùng';
         $for = 'users';
+        $searchBy = 'Tìm theo tên người dùng';
         return view("data_manage.index", compact(
             "page",
             'types',
             'values',
             'title',
             'count',
-            'for'
+            'for','searchBy','req'
         )
         );
     }

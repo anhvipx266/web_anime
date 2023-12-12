@@ -18,7 +18,8 @@ class AuthorController extends Controller
         $limit = 10; //tùy chọn, số dòng/ trang
         $page = $req->page > 0 ? $req->page : 1; // trang hiện tại đang truy cập
         //values:id, tit, desc, thum, release_date, vote, like
-        $authors = Author::paginate($limit, ['*'], 'page', $page);
+        // dd($req->get('order'));
+        $authors = Author::search($req)->paginate($limit, ['*'], 'page', $page);
         $count = $authors->count();
         // key => 
         //          form type
@@ -30,13 +31,15 @@ class AuthorController extends Controller
         $values = $authors;
         $title = 'Tác giả';
         $for = 'authors';
+        $searchBy = 'Tìm theo tên tác giả';
         return view("data_manage.index", compact(
             "page",
             'types',
             'values',
             'title',
             'count',
-            'for'
+            'for',
+            'searchBy','req'
         )
         );
     }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
+use Illuminate\Http\Request;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -47,5 +47,24 @@ class User extends Authenticatable
     {
         return $this->join('user_roles', 'users.user_role', '=', 'user_roles.id')
                     ->select('users.*', 'user_roles.role as role');
+    }
+    public static function search(Request $req)
+    {
+        $query = self::getDetails();
+        if($req->has('search')){
+            $search = $req->get('search');
+            $search = '%'.$search.'%';
+            // $search_user = User::where('name','LIKE','%'.$search.'%')->first();
+            $query->where('name','LIKE',$search);
+        }
+        if($req->has('order')){
+            $order = $req->get('order');
+            $order = intval($order);
+            if($order == 0){
+                $query->orderBy('created_at','desc');
+            }
+            
+        }
+        return $query;
     }
 }

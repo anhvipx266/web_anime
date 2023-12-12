@@ -18,7 +18,8 @@ class SeriesController extends Controller
         $limit = 10; //tùy chọn, số dòng/ trang
         $page = $req->page > 0 ? $req->page : 1; // trang hiện tại đang truy cập
         //values:id, tit, desc, thum, release_date, vote, like
-        $series = Series::paginate($limit, ['*'], 'page', $page);
+        
+        $series = Series::search($req)->paginate($limit, ['*'], 'page', $page);
         $count = $series->count();
         // key => 
         //          form type
@@ -31,13 +32,15 @@ class SeriesController extends Controller
         $values = $series;
         $title = 'Loạt phim';
         $for = 'series';
+        $searchBy = 'Tìm theo tiêu đề';
         return view("data_manage.index", compact(
             "page",
             'types',
             'values',
             'title',
             'count',
-            'for'
+            'for',
+            'searchBy','req'
         )
         );
     }

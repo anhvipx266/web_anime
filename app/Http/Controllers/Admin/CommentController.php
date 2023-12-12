@@ -20,7 +20,8 @@ class CommentController extends Controller
         $limit = 10; //tùy chọn, số dòng/ trang
         $page = $req->page > 0 ? $req->page : 1; // trang hiện tại đang truy cập
         //values:id, tit, desc, thum, release_date, vote, like
-        $comments = Comment::GetDetails()
+       
+        $comments = Comment::search($req)
             ->paginate($limit, ['*'], 'page', $page);
         // dd($comments);
         $count = $comments->count();
@@ -36,13 +37,15 @@ class CommentController extends Controller
         $values = $comments;
         $title = 'Bình luận';
         $for = 'comments';
+        $searchBy = 'Tìm theo tên người dùng...';
         return view("data_manage.index", compact(
             "page",
             'types',
             'values',
             'title',
             'count',
-            'for'
+            'for',
+            'searchBy','req'
         )
         );
     }

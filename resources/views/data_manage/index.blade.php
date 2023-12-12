@@ -17,22 +17,27 @@
                     <span class="main__title-stat">Tổng cộng {{number_format($count)}}</span>
 
                     <div class="main__title-wrap">
-                        <select class="filter__select" name="sort" id="filter__sort">
-                            <option value="0">Date created</option>
-                            <option value="1">Rating</option>
-                            <option value="2">Views</option>
-                        </select>
+                        
 
                         <!-- search -->
-                        <form action="#" class="main__title-form">
-                            <input type="text" placeholder="Find movie / tv series..">
-                            <button type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path
-                                        d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z">
-                                    </path>
-                                </svg>
-                            </button>
+                        <form action="{{route('admin.'.$for.'.index')}}" class="main__title-wrap">
+                            <input type="hidden" name="page" value="{{$page}}">
+                            <select class="filter__select" name="order" id="filter__sort">
+                                <option value="-1" {{$req->get('order') == '-1'?'selected':''}}>Mặc định</option>
+                                <option value="0" {{$req->get('order') == '0'?'selected':''}}>Date created</option>
+                                <option value="1" {{$req->get('order') == '1'?'selected':''}}>Rating</option>
+                                <option value="2" {{$req->get('order') == '2'?'selected':''}}>Views</option>
+                            </select>
+                            <div class="main__title-form">
+                                <input type="text" placeholder="{{$searchBy}}" name="search">
+                                <button type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path
+                                            d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
                         </form>
                         <!-- end search -->
                     </div>

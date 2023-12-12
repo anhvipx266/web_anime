@@ -18,7 +18,8 @@ class UserRoleController extends Controller
         $limit = 10; //tùy chọn, số dòng/ trang
         $page = $req->page > 0 ? $req->page : 1; // trang hiện tại đang truy cập
         //values:id, tit, desc, thum, release_date, vote, like
-        $user_roles = UserRole::paginate($limit, ['*'], 'page', $page);
+        
+        $user_roles = UserRole::search($req)->paginate($limit, ['*'], 'page', $page);
         $count = $user_roles->count();
         // key => 
         //          form type
@@ -30,13 +31,15 @@ class UserRoleController extends Controller
         $values = $user_roles;
         $title = 'Vai trò người dùng';
         $for = 'user_roles';
+        $searchBy = 'Tìm theo vai trò...';
         return view("data_manage.index", compact(
             "page",
             'types',
             'values',
             'title',
             'count',
-            'for'
+            'for',
+            'searchBy','req'
         )
         );
     }

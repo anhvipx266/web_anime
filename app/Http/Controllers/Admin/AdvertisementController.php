@@ -19,8 +19,9 @@ class AdvertisementController extends Controller
         $limit = 10; //tùy chọn, số dòng/ trang
         $page = $req->page > 0 ? $req->page : 1; // trang hiện tại đang truy cập
         //values:id, tit, desc, thum, release_date, vote, like
-        $authors = Advertisement::paginate($limit, ['*'], 'page', $page);
-        $count = $authors->count();
+        // dd($query->toSql());
+        $ads = Advertisement::search($req)->paginate($limit, ['*'], 'page', $page);
+        $count = $ads->count();
         // key => 
         //          form type
         //          show text
@@ -31,16 +32,18 @@ class AdvertisementController extends Controller
             'image_url' => ['image', 'Hình ảnh'],
             'target_url' => ['link','Mục tiêu'],
         ];
-        $values = $authors;
+        $values = $ads;
         $title = 'Quảng cáo';
         $for = 'advertisements';
+        $searchBy = 'Tìm theo tiêu đề...';
         return view("data_manage.index", compact(
             "page",
             'types',
             'values',
             'title',
             'count',
-            'for'
+            'for',
+            'searchBy','req'
         )
         );
     }
