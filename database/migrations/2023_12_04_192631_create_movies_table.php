@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('country_id');
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->text('description')->nullable();
+            $table->text('link')->nullable();
             $table->string('thumbnail')->nullable();
             $table->date('release_date')->nullable();
             $table->integer('vote_count')->nullable();

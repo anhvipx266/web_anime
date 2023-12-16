@@ -25,7 +25,7 @@ class AccountController extends Controller
             'password.required'=> 'Vui lòng mật khẩu',
             'password.min'=> 'Mật khẩu tối thiểu 8 kí tự',
         ];
-        $validated = $req->validate($rules,$messages);
+        $validated = $req->validate($rules);
 
         $staff = Staff::where('email', $validated['email'])->first();
         if(Hash::check($validated['password'], $staff->password)){
